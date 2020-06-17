@@ -4,6 +4,7 @@ import redis
 local_redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
+# 默认淘汰策略, 不驱逐数据
 class NoevictionPolicy():
     def __init__(self):
         local_redis.set("maxmemory", "1mb")
@@ -17,5 +18,6 @@ class NoevictionPolicy():
 
 
 while 1:
+    # redis 内存数据达到maxmemory,报错
     NoevictionPolicy().add_id(local_redis)
     # redis.exceptions.ResponseError: OOM command not allowed when used memory > 'maxmemory'.
