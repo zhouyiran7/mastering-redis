@@ -20,7 +20,6 @@ def reset(instance: redis.StrictRedis):
 
 # 通过不同的hash-max-ziplist-entries设置, 查看标准哈希表编码的序列化长度
 def plot_hashes(runs=500, zip_list_entries=512) -> slice:
-    # 重置数据库
     reset(local_redis)
 
     key = "test-hash"
@@ -30,7 +29,7 @@ def plot_hashes(runs=500, zip_list_entries=512) -> slice:
     for i in range(runs):
         field = "f{}".format(i)
         local_redis.hset(key, field, i)
-        list.append(size(local_redis, key))
+        ser_ist.append(size(local_redis, key))
 
     print(local_redis.debug_object(key).get("serializedlength"))
 
