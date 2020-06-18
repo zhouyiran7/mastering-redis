@@ -1,16 +1,16 @@
 import redis
 import uuid
 
-local_datastore = redis.StrictRedis(host='localhost', port=6379, db=0)
+local_redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 #volatile-lru:从已设置过期时间的内存数据集中挑选最近最少使用的数据淘汰
 class ValatileLRU():
     def __init__(self):
-        local_datastore.flushdb()
+        local_redis.flushdb()
         # 设置内存驱逐策略 valatile-lru
-        local_datastore.config_set("maxmemory-policy", "volatile-lru")
-        print(local_datastore.info("memory"))
+        local_redis.config_set("maxmemory-policy", "volatile-lru")
+        print(local_redis.info("memory"))
 
     def add_id_expire(self, redis_instance):
         count = redis_instance.incr("global:uuid")
